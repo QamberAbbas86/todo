@@ -6,7 +6,7 @@ export default function Home() {
   const [title, settitle] = useState("");
   const [desc, setdesc] = useState("");
   const [mainTask, setMainTask] = useState([]);
-
+  const [completed, setcompleted] = useState('');
   const submitHandler = (e) => {
     e.preventDefault();
     setMainTask([...mainTask, { title, desc }]);
@@ -15,15 +15,42 @@ export default function Home() {
     setdesc("");
     console.log(mainTask);
   };
+  const edit = (i) => {
+console.log('Edit');
 
+  };
+  const complete = (i) => {
+    let copytask = [...mainTask];
+    copytask[i].completed = true; // Assuming you have a 'completed' property in your task object
+    setMainTask(copytask);
+    console.log('complete');
+  };
+
+  const deleted = (i) => {
+    console.log('deleted');
+    let copytask = [...mainTask];
+    copytask.splice(i, 1);
+    setMainTask(copytask);
+  };
+  
   let renderTask = <h2 className="text-white ">Task Not There</h2>;
 
   renderTask = mainTask.map((t, i) => {
     return (
-      <div key='task-i' className="flex justify-between">
-        <p className="">{i}</p>
+      <div data-key={i} className="flex px-2 justify-between w-full">
+        <p className="text-white p-4">{i}</p>
         <h5 className="text-white p-4">{t.title}</h5>
         <h6 className="text-white p-4">{t.desc}</h6>
+        <button onClick={edit} className="inline-flex items-center justify-center px-1 py-1 font-sans font-semibold tracking-wide text-white bg-blue-500 rounded-lg h-[60px]">
+        <i class="fa-solid text-white fa-pen-to-square"></i>
+        </button>
+        <button onClick={complete} className="inline-flex items-center justify-center px-1 py-1 font-sans font-semibold tracking-wide text-white bg-blue-500 rounded-lg h-[60px]">
+        <i class="fa-solid text-white fa-check"></i>
+        </button>
+        <button onClick={deleted} className="inline-flex items-center justify-center px-1 py-1 font-sans font-semibold tracking-wide text-white bg-blue-500 rounded-lg h-[60px]">
+        <i class="fa-solid text-white fa-trash"></i>
+        </button>
+
       </div>
     );
   });
@@ -58,8 +85,20 @@ export default function Home() {
       </form>
 
       <hr></hr>
-      <div className="p-6 bg-black">
-        <ul className="">{renderTask}</ul>
+      <div className="py-6 bg-black w-full">
+      <div className="flex px-2 justify-between w-full">
+        <p className="text-white p-4">No.</p>
+        <h5 className="text-white p-4">Task Name</h5>
+        <h6 className="text-white p-4">Task Disc</h6>
+        <i class="fa-solid text-white fa-pen-to-square"></i>
+        <i class="fa-solid text-white fa-check"></i>
+        <i class="fa-solid text-white fa-trash"></i>
+      </div>
+        <ul className="">
+          
+          {renderTask}
+          
+          </ul>
       </div>
     </main>
   );
